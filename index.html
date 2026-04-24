@@ -59,19 +59,32 @@
     details.cheatsheet > summary::-webkit-details-marker { display: none; }
     details.cheatsheet > summary::before { content: "▶"; font-size: 10px; transition: transform 160ms ease; }
     details.cheatsheet[open] > summary::before { transform: rotate(90deg); }
-    .boss-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; }
-    .boss-card .ico { font-size: 22px; flex: 0 0 28px; text-align: center; line-height: 28px; }
+    .boss-group { margin-top: 14px; }
+    .boss-group:first-child { margin-top: 4px; }
+    .boss-group h3 { font-size: 11px; color: var(--text-dim); margin: 0 4px 6px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; }
+    .boss-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--el-color, var(--border));
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .boss-card.el-wind  { --el-color: #8bd88f; }
+    .boss-card.el-fire  { --el-color: #ff8a65; }
+    .boss-card.el-ice   { --el-color: #7ac0ff; }
+    .boss-card.el-earth { --el-color: #d9a86a; }
+    .boss-card.el-bolt  { --el-color: #ffd14d; }
+    .boss-card .ico { font-size: 22px; flex: 0 0 28px; text-align: center; line-height: 26px; }
     .boss-card .bbody { flex: 1; min-width: 0; }
-    .boss-card .bname { font-size: 14.5px; font-weight: 600; }
-    .boss-card .tags { margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap; }
-    .boss-card .tag { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; font-weight: 600; letter-spacing: 0.3px; }
-    .tag.field-miss { background: #4a1a1a; color: #ff9a9a; }
-    .tag.mat        { background: #4a311a; color: #ffc38a; }
-    .tag.cheatsheet { background: #16314e; color: #9ec3ff; }
-    .tag.op         { background: #3a1a4a; color: #d5a7ff; }
-    .tag.prime      { background: #4a421a; color: #ffe28a; }
-    .tag.codex      { background: #2a2f3a; color: var(--text-dim); }
-    .boss-card .bnote { margin-top: 6px; font-size: 12.5px; color: var(--text-dim); line-height: 1.4; }
+    .boss-card .bhead { display: flex; align-items: baseline; gap: 8px; }
+    .boss-card .bname { font-size: 14.5px; font-weight: 600; flex: 1; min-width: 0; }
+    .boss-card .stars { font-size: 11px; color: #ffc46b; letter-spacing: 1px; flex-shrink: 0; }
+    .boss-card .stars .dim { color: var(--border); }
+    .boss-card .bnote { margin-top: 3px; font-size: 12.5px; color: var(--text-dim); line-height: 1.4; }
+    .boss-card .bmeta { margin-top: 4px; font-size: 10.5px; color: var(--text-dim); opacity: 0.78; letter-spacing: 0.2px; }
+    .boss-card .bmeta .sep { margin: 0 6px; color: var(--border); }
 
     pre.testlog { white-space: pre-wrap; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; font-size: 12px; margin: 12px 0; }
     .hidden { display: none !important; }
@@ -129,55 +142,57 @@
   const DAILY_KEYS  = DAILY_ITEMS.map(i => i.key);
   const WEEKLY_KEYS = WEEKLY_ITEMS.map(i => i.key);
 
+  // schema: { name, icon, group, element, priority(1~3), role, note }
   const CHEATSHEET = [
     // --- 장비 세트 재료 보스 ---
-    { name: "스푼머거",     icon: "🍴", tags: ["field-miss","mat"],
-      note: "폭식의 껍데기 → 폭식가의 자세(바람 4셋). 의뢰 수락 시에만 등장" },
-    { name: "포크머거",     icon: "🍴", tags: ["mat"],
-      note: "탐식의 비계(불 2셋). 맵에도 나옴 — 스푼머거와 혼동 주의" },
-    { name: "산악 미노타",  icon: "🐂", tags: ["field-miss","mat"],
-      note: "쇠뿔 → 높은 산의 위용(불 4셋). 평원 미노타와 혼동 주의" },
-    { name: "평원 미노타",  icon: "🐃", tags: ["mat"],
-      note: "발굽(2셋 재료). 맵 등장. 산악과 다른 맵·다른 재료" },
-    { name: "만월록",       icon: "🦌", tags: ["field-miss","mat"],
-      note: "신수의 녹각 → 달 그림자(불 4셋, 플레아 정장). 4장 중반 등장" },
-    { name: "슬라킹",       icon: "💧", tags: ["field-miss","mat","cheatsheet"],
+    { name: "스푼머거",       icon: "🍴", group: "mat",   element: "바람", priority: 3, role: null,
+      note: "폭식의 껍데기 → 폭식가의 자세(4셋). 의뢰 수락 시에만 등장" },
+    { name: "포크머거",       icon: "🍴", group: "mat",   element: "불",   priority: 1, role: null,
+      note: "탐식의 비계(2셋). 맵에도 나옴 — 스푼머거와 혼동 주의" },
+    { name: "산악 미노타",    icon: "🐂", group: "mat",   element: "불",   priority: 3, role: null,
+      note: "쇠뿔 → 높은 산의 위용(4셋). 평원 미노타와 혼동 주의" },
+    { name: "평원 미노타",    icon: "🐃", group: "mat",   element: "불",   priority: 1, role: null,
+      note: "발굽(2셋 재료). 맵 등장 — 산악과 다른 맵·다른 재료" },
+    { name: "만월록",         icon: "🦌", group: "mat",   element: "불",   priority: 3, role: null,
+      note: "신수의 녹각 → 달 그림자(4셋, 플레아 정장). 4장 중반 등장" },
+    { name: "슬라킹",         icon: "💧", group: "mat",   element: null,   priority: 2, role: null,
       note: "왕의 점액(공증 3% 2셋) 재료. 의뢰 우선 수락" },
-    { name: "하카",         icon: "🦅", tags: ["field-miss","mat","cheatsheet"],
-      note: "위대한 전사의 터럭 → 광포한 백랑(땅 4셋) 재료" },
+    { name: "하카",           icon: "🦅", group: "mat",   element: "땅",   priority: 3, role: null,
+      note: "위대한 전사의 터럭 → 광포한 백랑(4셋) 재료" },
 
     // --- 종결급 / op-tier 몬링·합성 ---
-    { name: "아몬",         icon: "🌟", tags: ["op","prime"],
-      note: "10회공격 시 아군 치확(쿨X). 황금향의 파수꾼 합성 재료. 의뢰 고정" },
-    { name: "스카",         icon: "⚔️", tags: ["op"],
-      note: "치명타 시 보스 피해 증가(쿨X). 1티어, 의뢰 고정" },
-    { name: "보르보그",     icon: "🔥", tags: ["op"],
+    { name: "아몬",           icon: "🌟", group: "op",    element: null,   priority: 3, role: "서브딜·서포트",
+      note: "10회공격 시 아군 치확(쿨X). 황금향 파수꾼 합성 재료. 의뢰 고정" },
+    { name: "스카",           icon: "⚔️", group: "op",    element: null,   priority: 3, role: "메인딜",
+      note: "치명타 시 보스 피해 증가(쿨X). 1티어. 의뢰 고정" },
+    { name: "보르보그",       icon: "🔥", group: "op",    element: null,   priority: 3, role: "메인딜",
       note: "종결급. 굴각 합성 재료(보르보그+김추추→금동). 의뢰 고정" },
-    { name: "몰리",         icon: "✨", tags: ["op"],
-      note: "약공 시 아군 공증. 황금향 재료. ※이벤트 황금향 드랍 100% 후 우선도↓" },
-    { name: "굴각",         icon: "⛓️", tags: ["op","prime"],
-      note: "치명타 공격 시 방어력 감소(쿨X). ☆링크체인 추천☆. 한울+금동 합성" },
-    { name: "황금향의 파수꾼", icon: "🌻", tags: ["op","prime"],
+    { name: "몰리",           icon: "✨", group: "op",    element: null,   priority: 2, role: "서포트",
+      note: "약공 시 아군 공증. 황금향 재료. ※이벤트 황금향 100% 드랍 후 우선도↓" },
+    { name: "굴각",           icon: "⛓️", group: "op",    element: null,   priority: 3, role: "메인딜",
+      note: "치명타 시 방어력 감소(쿨X). ☆링크체인 추천☆. 한울+금동 합성" },
+    { name: "황금향의 파수꾼", icon: "🌻", group: "op",    element: null,   priority: 3, role: "서포트",
       note: "약점 공격 시 아군 공증(쿨20). 쿠스토스+돈이너무좋은몰리 합성" },
-    { name: "얼음주먹가이", icon: "🧊", tags: ["op","cheatsheet"],
+    { name: "얼음주먹가이",   icon: "🧊", group: "op",    element: "얼음", priority: 3, role: "메인딜",
       note: "오필리아 메인 핵심 — 얼음 속성 유일 저항감소 몬링" },
-    { name: "고블린큰형님", icon: "🛡️", tags: ["op"],
-      note: "번외 — 힐러 없는 3인팟 안정성. 기본공격 10회 적중(퇴각 캐릭 부적합)" },
+    { name: "고블린큰형님",   icon: "🛡️", group: "op",    element: null,   priority: 1, role: "안정성",
+      note: "번외 — 힐러 없는 3인팟. 기본공격 10회 적중(퇴각 캐릭 부적합)" },
 
     // --- 도감작 / 의뢰 우선 수락 ---
-    { name: "이리도커",     icon: "⚡", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천 (도감작)" },
-    { name: "타그락",       icon: "🗡️", tags: ["cheatsheet"], note: "의뢰 전용 — 우선 수락" },
-    { name: "돌주먹가이",   icon: "🪨", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
+    { name: "이리도커",       icon: "⚡", group: "codex", element: "번개", priority: 2, role: null,
+      note: "도감작 — 의뢰 우선 수락 추천" },
+    { name: "타그락",         icon: "🗡️", group: "codex", element: null,   priority: 2, role: null,
+      note: "의뢰 전용 — 우선 수락" },
+    { name: "돌주먹가이",     icon: "🪨", group: "codex", element: "땅",   priority: 2, role: null,
+      note: "의뢰 우선 수락 추천" },
   ];
 
-  const TAG_LABEL = {
-    "field-miss": "필드미젠",
-    "mat":        "재료",
-    "cheatsheet": "치트시트",
-    "op":         "사기",
-    "prime":      "프라임합성",
-    "codex":      "도감작",
-  };
+  const EL_CLASS = { "바람": "wind", "불": "fire", "얼음": "ice", "땅": "earth", "번개": "bolt" };
+  const GROUPS = [
+    { key: "mat",   title: "장비 세트 재료" },
+    { key: "op",    title: "종결급 / op-tier" },
+    { key: "codex", title: "도감·의뢰 우선 수락" },
+  ];
 
   // --- time ---
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
@@ -310,21 +325,47 @@
       WEEKLY_ITEMS.map(it => cardHtml(it, !!STATE.checked[it.key])).join("");
   }
 
+  function starsHtml(p) {
+    if (!p) return "";
+    const filled = "★".repeat(p);
+    const empty  = "☆".repeat(Math.max(0, 3 - p));
+    return `${filled}<span class="dim">${empty}</span>`;
+  }
+
+  function bossCardHtml(b) {
+    const elClass = b.element ? `el-${EL_CLASS[b.element] || ""}` : "";
+    const metaParts = [];
+    if (b.element) metaParts.push(b.element);
+    if (b.role)    metaParts.push(b.role);
+    const meta = metaParts.length
+      ? `<div class="bmeta">${metaParts.map(escapeHtml).join('<span class="sep">·</span>')}</div>`
+      : "";
+    return `
+      <div class="boss-card ${elClass}">
+        <div class="ico">${escapeHtml(b.icon)}</div>
+        <div class="bbody">
+          <div class="bhead">
+            <div class="bname">${escapeHtml(b.name)}</div>
+            <div class="stars" aria-label="우선도 ${b.priority || 0}/3">${starsHtml(b.priority)}</div>
+          </div>
+          <div class="bnote">${escapeHtml(b.note)}</div>
+          ${meta}
+        </div>
+      </div>`;
+  }
+
   function renderCheatsheet() {
     const el = document.getElementById("cheatsheet");
     el.open = !!STATE.cheatsheetOpen;
     const list = document.getElementById("cheatsheetList");
-    list.innerHTML = CHEATSHEET.map(b => `
-      <div class="boss-card">
-        <div class="ico">${escapeHtml(b.icon)}</div>
-        <div class="bbody">
-          <div class="bname">${escapeHtml(b.name)}</div>
-          <div class="tags">
-            ${b.tags.map(t => `<span class="tag ${t}">${escapeHtml(TAG_LABEL[t] || t)}</span>`).join("")}
-          </div>
-          <div class="bnote">${escapeHtml(b.note)}</div>
-        </div>
-      </div>`).join("");
+    list.innerHTML = GROUPS.map(g => {
+      const items = CHEATSHEET.filter(b => b.group === g.key);
+      if (!items.length) return "";
+      return `<div class="boss-group">
+        <h3>${escapeHtml(g.title)}</h3>
+        ${items.map(bossCardHtml).join("")}
+      </div>`;
+    }).join("");
   }
 
   function renderAll() {
