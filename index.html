@@ -130,22 +130,44 @@
   const WEEKLY_KEYS = WEEKLY_ITEMS.map(i => i.key);
 
   const CHEATSHEET = [
-    { name: "스푼머거", icon: "🍴", tags: ["field-miss","mat"],
-      note: "의뢰 수락 시에만 등장. 폭식의 껍데기(바람 4셋) 드랍" },
-    { name: "포크머거", icon: "🍴", tags: ["field-miss","mat"],
-      note: "의뢰 수락 시에만 등장. 탐식의 비계(불 2셋) 드랍" },
-    { name: "아몬",     icon: "🌟", tags: ["op","prime"],
-      note: "서브딜·서포트 최강. 프라임 합성 필수급" },
-    { name: "스카",     icon: "⚔️", tags: ["op"],
-      note: "치명타 시 보스 피해 증가. 1티어" },
-    { name: "보르보그", icon: "🔥", tags: ["op"],
-      note: "종결급 품종. 굴각 합성 재료" },
-    { name: "몰리",     icon: "✨", tags: ["op"],
-      note: "약공 시 아군 전체 공증 버프. 황금향 재료" },
-    { name: "이리도커", icon: "⚡", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
-    { name: "슬라킹",   icon: "💧", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
-    { name: "타그락",   icon: "🗡️", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
-    { name: "하카",     icon: "🦅", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
+    // --- 장비 세트 재료 보스 ---
+    { name: "스푼머거",     icon: "🍴", tags: ["field-miss","mat"],
+      note: "폭식의 껍데기 → 폭식가의 자세(바람 4셋). 의뢰 수락 시에만 등장" },
+    { name: "포크머거",     icon: "🍴", tags: ["mat"],
+      note: "탐식의 비계(불 2셋). 맵에도 나옴 — 스푼머거와 혼동 주의" },
+    { name: "산악 미노타",  icon: "🐂", tags: ["field-miss","mat"],
+      note: "쇠뿔 → 높은 산의 위용(불 4셋). 평원 미노타와 혼동 주의" },
+    { name: "평원 미노타",  icon: "🐃", tags: ["mat"],
+      note: "발굽(2셋 재료). 맵 등장. 산악과 다른 맵·다른 재료" },
+    { name: "만월록",       icon: "🦌", tags: ["field-miss","mat"],
+      note: "신수의 녹각 → 달 그림자(불 4셋, 플레아 정장). 4장 중반 등장" },
+    { name: "슬라킹",       icon: "💧", tags: ["field-miss","mat","cheatsheet"],
+      note: "왕의 점액(공증 3% 2셋) 재료. 의뢰 우선 수락" },
+    { name: "하카",         icon: "🦅", tags: ["field-miss","mat","cheatsheet"],
+      note: "위대한 전사의 터럭 → 광포한 백랑(땅 4셋) 재료" },
+
+    // --- 종결급 / op-tier 몬링·합성 ---
+    { name: "아몬",         icon: "🌟", tags: ["op","prime"],
+      note: "10회공격 시 아군 치확(쿨X). 황금향의 파수꾼 합성 재료. 의뢰 고정" },
+    { name: "스카",         icon: "⚔️", tags: ["op"],
+      note: "치명타 시 보스 피해 증가(쿨X). 1티어, 의뢰 고정" },
+    { name: "보르보그",     icon: "🔥", tags: ["op"],
+      note: "종결급. 굴각 합성 재료(보르보그+김추추→금동). 의뢰 고정" },
+    { name: "몰리",         icon: "✨", tags: ["op"],
+      note: "약공 시 아군 공증. 황금향 재료. ※이벤트 황금향 드랍 100% 후 우선도↓" },
+    { name: "굴각",         icon: "⛓️", tags: ["op","prime"],
+      note: "치명타 공격 시 방어력 감소(쿨X). ☆링크체인 추천☆. 한울+금동 합성" },
+    { name: "황금향의 파수꾼", icon: "🌻", tags: ["op","prime"],
+      note: "약점 공격 시 아군 공증(쿨20). 쿠스토스+돈이너무좋은몰리 합성" },
+    { name: "얼음주먹가이", icon: "🧊", tags: ["op","cheatsheet"],
+      note: "오필리아 메인 핵심 — 얼음 속성 유일 저항감소 몬링" },
+    { name: "고블린큰형님", icon: "🛡️", tags: ["op"],
+      note: "번외 — 힐러 없는 3인팟 안정성. 기본공격 10회 적중(퇴각 캐릭 부적합)" },
+
+    // --- 도감작 / 의뢰 우선 수락 ---
+    { name: "이리도커",     icon: "⚡", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천 (도감작)" },
+    { name: "타그락",       icon: "🗡️", tags: ["cheatsheet"], note: "의뢰 전용 — 우선 수락" },
+    { name: "돌주먹가이",   icon: "🪨", tags: ["cheatsheet"], note: "의뢰 우선 수락 추천" },
   ];
 
   const TAG_LABEL = {
