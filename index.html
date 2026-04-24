@@ -84,8 +84,9 @@
     .boss-card .bnote { margin-top: 3px; font-size: 12.5px; color: var(--text-dim); line-height: 1.4; }
     .boss-card .bmeta { margin-top: 5px; display: flex; gap: 5px; flex-wrap: wrap; align-items: center; font-size: 10.5px; }
     .boss-card .fbadge { padding: 1.5px 6px; border-radius: 4px; font-weight: 600; letter-spacing: 0.2px; border: 1px solid transparent; }
-    .boss-card .fbadge.yes { background: #1a3a2a; color: #9ad3a8; }
-    .boss-card .fbadge.no  { background: #2a2018; color: #c3a694; }
+    .boss-card .fbadge.yes    { background: #1a3a2a; color: #9ad3a8; }
+    .boss-card .fbadge.no     { background: #2a2018; color: #c3a694; }
+    .boss-card .fbadge.unsure { background: #2a2018; color: #c3a694; border: 1px dashed #5a4d42; }
     .boss-card .role { color: var(--text-dim); opacity: 0.78; }
 
     .legend { display: flex; gap: 10px; flex-wrap: wrap; padding: 2px 4px 10px; font-size: 11px; color: var(--text-dim); align-items: center; }
@@ -161,37 +162,37 @@
 
   // schema: { name, icon, element, rank, field, role, note }
   // rank: 의뢰 잡을 순서(낮을수록 우선). 동률 그대로 중복.
-  // field: true=필드젠(맵에 나옴) / false=미젠(의뢰로만)
+  // field: "y"=필드젠(맵에 나옴) / "n"=미젠(의뢰로만) / "?"=불확실
   const CHEATSHEET = [
-    { name: "스카",           icon: "⚔️", element: null,   rank: 1,  field: false, role: "메인딜",
-      note: "치명타 시 보스 피해 증가(쿨X). 1티어. 의뢰 고정 2회" },
-    { name: "보르보그",       icon: "🔥", element: null,   rank: 1,  field: false, role: "메인딜",
+    { name: "스카",           icon: "⚔️", element: null,   rank: 1,  field: "y", role: "메인딜",
+      note: "치명타 시 보스 피해 증가(쿨X). 1티어. 의뢰 고정 2회(필드+의뢰)" },
+    { name: "보르보그",       icon: "🔥", element: null,   rank: 1,  field: "y", role: "메인딜",
       note: "종결급. 굴각 합성 재료(보르보그+김추추→금동). 의뢰 고정 2회" },
-    { name: "몰리",           icon: "✨", element: null,   rank: 3,  field: false, role: "서포트",
+    { name: "몰리",           icon: "✨", element: null,   rank: 3,  field: "y", role: "서포트",
       note: "약공 시 아군 공증. 황금향 재료. ※이벤트 황금향 100% 드랍 후 우선도↓" },
-    { name: "산악 미노타",    icon: "🐂", element: "불",   rank: 4,  field: false, role: null,
+    { name: "산악 미노타",    icon: "🐂", element: "불",   rank: 4,  field: "?", role: null,
       note: "쇠뿔 → 높은 산의 위용(4셋). 평원 미노타와 혼동 주의" },
-    { name: "만월록",         icon: "🦌", element: "불",   rank: 4,  field: false, role: null,
+    { name: "만월록",         icon: "🦌", element: "불",   rank: 4,  field: "n", role: null,
       note: "신수의 녹각 → 달 그림자(4셋, 플레아 정장). 4장 중반 등장" },
-    { name: "하카",           icon: "🦅", element: "땅",   rank: 4,  field: false, role: null,
+    { name: "하카",           icon: "🦅", element: "땅",   rank: 4,  field: "?", role: null,
       note: "위대한 전사의 터럭 → 광포한 백랑(4셋) 재료" },
-    { name: "스푼머거",       icon: "🍴", element: "바람", rank: 4,  field: false, role: null,
+    { name: "스푼머거",       icon: "🍴", element: "바람", rank: 4,  field: "n", role: null,
       note: "폭식의 껍데기 → 폭식가의 자세(4셋). 의뢰 수락 시에만 등장" },
-    { name: "슬라킹",         icon: "💧", element: null,   rank: 8,  field: false, role: null,
+    { name: "슬라킹",         icon: "💧", element: null,   rank: 8,  field: "n", role: null,
       note: "왕의 점액(공증 3% 2셋) 재료. 의뢰 우선 수락" },
-    { name: "얼음주먹가이",   icon: "🧊", element: "얼음", rank: 9,  field: false, role: "메인딜",
+    { name: "얼음주먹가이",   icon: "🧊", element: "얼음", rank: 9,  field: "?", role: "메인딜",
       note: "오필리아 메인 핵심 — 얼음 속성 유일 저항감소 몬링" },
-    { name: "이리도커",       icon: "⚡", element: "번개", rank: 10, field: false, role: null,
+    { name: "이리도커",       icon: "⚡", element: "번개", rank: 10, field: "?", role: null,
       note: "도감작 — 의뢰 우선 수락 추천" },
-    { name: "타그락",         icon: "🗡️", element: null,   rank: 10, field: false, role: null,
-      note: "의뢰 전용 — 우선 수락" },
-    { name: "돌주먹가이",     icon: "🪨", element: "땅",   rank: 10, field: false, role: null,
+    { name: "타그락",         icon: "🗡️", element: null,   rank: 10, field: "n", role: null,
+      note: "의뢰 전용 — 우선 수락 (필드 리젠 안 됨)" },
+    { name: "돌주먹가이",     icon: "🪨", element: "땅",   rank: 10, field: "?", role: null,
       note: "의뢰 우선 수락 추천" },
-    { name: "포크머거",       icon: "🍴", element: "불",   rank: 13, field: true,  role: null,
+    { name: "포크머거",       icon: "🍴", element: "불",   rank: 13, field: "y", role: null,
       note: "탐식의 비계(2셋). 맵에도 나옴 — 스푼머거와 혼동 주의" },
-    { name: "평원 미노타",    icon: "🐃", element: "불",   rank: 13, field: true,  role: null,
+    { name: "평원 미노타",    icon: "🐃", element: "불",   rank: 13, field: "y", role: null,
       note: "발굽(2셋 재료). 산악 미노타와 다른 맵·다른 재료" },
-    { name: "고블린큰형님",   icon: "🛡️", element: null,   rank: 15, field: false, role: "안정성",
+    { name: "고블린큰형님",   icon: "🛡️", element: null,   rank: 15, field: "?", role: "안정성",
       note: "번외 — 힐러 없는 3인팟. 기본공격 10회 적중(퇴각 캐릭 부적합)" },
   ];
 
@@ -330,9 +331,10 @@
 
   function bossCardHtml(b) {
     const elClass = b.element ? `el-${EL_CLASS[b.element] || ""}` : "";
-    const fieldBadge = b.field
-      ? `<span class="fbadge yes">🗺️ 필드젠</span>`
-      : `<span class="fbadge no">🚫 미젠</span>`;
+    const fieldBadge =
+      b.field === "y" ? `<span class="fbadge yes">🗺️ 필드젠</span>` :
+      b.field === "?" ? `<span class="fbadge unsure">🚫 미젠?</span>` :
+                        `<span class="fbadge no">🚫 미젠</span>`;
     const roleHtml = b.role ? `<span class="role">${escapeHtml(b.role)}</span>` : "";
     return `
       <div class="boss-card ${elClass}">
